@@ -1,4 +1,4 @@
-package com.nikolay.deliverycost;
+package com.epam.brest.cources;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;

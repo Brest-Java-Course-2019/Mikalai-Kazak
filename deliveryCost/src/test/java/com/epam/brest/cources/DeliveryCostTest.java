@@ -1,7 +1,9 @@
-package com.nikolay.deliverycost;
+package com.epam.brest.cources;
 
 import static org.junit.Assert.assertEquals;
 
+import com.epam.brest.cources.DeliveryCost;
+import com.epam.brest.cources.DeliveryCostCalculatorImpl;
 import org.junit.Test;
 
 public class DeliveryCostTest {

@@ -1,4 +1,4 @@
-package com.nikolay.deliverycost;
+package com.epam.brest.cources;
 
 public interface IDeliveryCostCalculator {
 
