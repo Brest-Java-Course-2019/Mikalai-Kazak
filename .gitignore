@@ -8,9 +8,10 @@
 *.ctxt
 
 #Idea
-*.idea
-*.target
+.idea
+target
 *.iml
+out
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
