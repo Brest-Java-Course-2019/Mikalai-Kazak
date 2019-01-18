@@ -25,7 +25,7 @@ public class Application {
             deliveryCostCalculator.printResult(result);
 
         } catch (InputMismatchException | IllegalArgumentException ex) {
-            System.err.println("Failed " + ex.getMessage());
+            System.err.println("Failed: " + ex.getMessage());
         }
     }
 }

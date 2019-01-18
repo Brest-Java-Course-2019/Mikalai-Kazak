@@ -13,6 +13,9 @@ public class InputUserData {
         in = new Scanner(System.in);
         System.out.print(msg);
         input = in.nextDouble();
+        if( input < 0) {
+            throw new IllegalArgumentException("Parameters can't be negative " + input);
+        }
         return input;
     }
 }
