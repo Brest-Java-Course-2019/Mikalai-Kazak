@@ -2,7 +2,7 @@ package com.nikolay.deliverycost;
 
 import java.util.InputMismatchException;
 
-class Application {
+public class Application {
 
     public static void main(String[] args) {
 
