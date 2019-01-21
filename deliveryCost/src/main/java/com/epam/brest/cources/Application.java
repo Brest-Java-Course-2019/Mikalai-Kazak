@@ -19,34 +19,30 @@ public class Application {
     private static void deliveryCalculate() {
 
         Scanner in = new Scanner(System.in);
-        PropertiesFileReader propertiesFileReader = new PropertiesFileReader();
-        DeliveryCost deliveryCost;
-
         try {
             System.out.println("Enter distance: ");
             double distance = in.nextDouble();
             System.out.println("Enter weight: ");
             double weight = in.nextDouble();
-
-            deliveryCost = new DeliveryCost(weight, distance);
-
-            if (weight < 15) {
-                double minCoef = propertiesFileReader.getPropertyValue("coef.min");
-                deliveryCost.setCoefficient(minCoef);
-            } else if (weight >= 15 && weight < 30) {
-                double middleCoef = propertiesFileReader.getPropertyValue("coef.middle");
-                deliveryCost.setCoefficient(middleCoef);
-            } else {
-                double maxCoef = propertiesFileReader.getPropertyValue("coef.max");
-                deliveryCost.setCoefficient(maxCoef);
-            }
-
+            double coefficient = calculateCoefficient(weight);
+            DeliveryCost deliveryCost = new DeliveryCost(weight, distance, coefficient);
             System.out.println(
                 "Price for delivery: " + deliveryCost.calculateDeliveryCost().toPlainString()
                     + "$");
 
         } catch (InputMismatchException | IllegalArgumentException | IOException ex) {
             System.err.println("Fail: " + ex.getMessage());
+        }
+    }
+
+    public static double calculateCoefficient(double weight) throws IOException {
+        PropertiesFileReader propertiesFileReader = new PropertiesFileReader();
+        if (weight < 15) {
+            return propertiesFileReader.getPropertyValue("coef.min");
+        } else if (weight >= 15 && weight < 30) {
+            return propertiesFileReader.getPropertyValue("coef.middle");
+        } else {
+            return propertiesFileReader.getPropertyValue("coef.max");
         }
     }
 }
