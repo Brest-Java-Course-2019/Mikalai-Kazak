@@ -47,7 +47,7 @@ class DeliveryCost {
     }
 
     public void setWeight(double weight) throws IllegalArgumentException {
-        if (weight < 0) {
+      if (weight <= 0) {
             throw new IllegalArgumentException("The weight can't be negative");
         }
         this.weight = weight;
