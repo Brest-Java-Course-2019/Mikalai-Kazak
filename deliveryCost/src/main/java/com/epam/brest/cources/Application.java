@@ -1,31 +1,45 @@
 package com.epam.brest.cources;
 
+import java.io.IOException;
 import java.util.InputMismatchException;
+import java.util.Scanner;
 
 public class Application {
 
     public static void main(String[] args) {
 
-        InputUserData inputUserData = new InputUserData();
+        Scanner in = new Scanner(System.in);
+
+        PropertiesFileReader propertiesFileReader = new PropertiesFileReader();
+
+        DeliveryCost deliveryCost;
 
         try {
+            System.out.println("Enter distance: ");
+            double distance = in.nextDouble();
+            System.out.println("Enter weight: ");
+            double weight = in.nextDouble();
 
-            double price = inputUserData.userInput("Input the price: ");
+            deliveryCost = new DeliveryCost(weight, distance);
 
-            double weight = inputUserData.userInput("Input the weight: ");
+            double minCoef = propertiesFileReader.getPropertyValue("coef.min");
+            double middleCoef = propertiesFileReader.getPropertyValue("coef.middle");
+            double maxCoef = propertiesFileReader.getPropertyValue("coef.max");
 
-            double distance = inputUserData.userInput("Input the distance: ");
+            if (weight < 15) {
+                deliveryCost.setCoefficient(minCoef);
+            } else if (weight >= 15 && weight < 30) {
+                deliveryCost.setCoefficient(middleCoef);
+            } else {
+                deliveryCost.setCoefficient(maxCoef);
+            }
 
-            DeliveryCost deliveryCost = new DeliveryCost(price, weight, distance);
+            System.out.println(
+                "Price for delivery: " + deliveryCost.calculateDeliveryCost().toPlainString()
+                    + "$");
 
-            IDeliveryCostCalculator deliveryCostCalculator = new DeliveryCostCalculatorImpl();
-
-            double result = deliveryCostCalculator.calculateCost(deliveryCost);
-
-            deliveryCostCalculator.printResult(result);
-
-        } catch (InputMismatchException | IllegalArgumentException ex) {
-            System.err.println("Failed: " + ex.getMessage());
+        } catch (InputMismatchException | IllegalArgumentException | IOException ex) {
+            System.err.println("Fail: " + ex.getMessage());
         }
     }
 }

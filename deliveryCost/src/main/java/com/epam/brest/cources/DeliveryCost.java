@@ -1,18 +1,28 @@
 package com.epam.brest.cources;
 
-class DeliveryCost {
+import java.math.BigDecimal;
 
-    private double price;
+class DeliveryCost {
 
     private double weight;
 
     private double distance;
 
-    public DeliveryCost(double price, double weight, double distance) {
-        if (price < 0 || weight < 0 || distance < 0) {
-            throw new IllegalArgumentException("Parameters can't be negative");
+    private double coefficient;
+
+    public DeliveryCost(double weight, double distance, double coefficient) {
+        if (weight <= 0 || distance <= 0 || coefficient < 0) {
+            throw new IllegalArgumentException("Parameters can't be negative or zero");
         }
-        this.price = price;
+        this.coefficient = coefficient;
+        this.weight = weight;
+        this.distance = distance;
+    }
+
+    public DeliveryCost(double weight, double distance) {
+        if (weight <= 0 || distance <= 0) {
+            throw new IllegalArgumentException("Parameters can't be negative or zero");
+        }
         this.weight = weight;
         this.distance = distance;
     }
@@ -21,15 +31,15 @@ class DeliveryCost {
 
     }
 
-    public double getPrice() {
-        return this.price;
+    public double getCoefficient() {
+        return coefficient;
     }
 
-    public void setPrice(double price) throws IllegalArgumentException {
-        if (price < 0) {
-            throw new IllegalArgumentException("The price can't be negative");
+    public void setCoefficient(double coefficient) {
+        if (coefficient <= 0) {
+            throw new IllegalArgumentException("The coefficient can't be negative");
         }
-        this.price = price;
+        this.coefficient = coefficient;
     }
 
     public double getWeight() {
@@ -48,10 +58,15 @@ class DeliveryCost {
     }
 
     public void setDistance(double distance) throws IllegalArgumentException {
-        if (distance < 0) {
+        if (distance <= 0) {
             throw new IllegalArgumentException("The distance can't be negative");
         }
         this.distance = distance;
     }
+
+    public BigDecimal calculateDeliveryCost() {
+        return BigDecimal.valueOf((distance + weight) * coefficient);
+    }
+
 
 }
