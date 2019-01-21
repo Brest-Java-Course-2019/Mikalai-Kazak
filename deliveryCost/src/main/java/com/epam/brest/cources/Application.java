@@ -10,11 +10,16 @@ import java.util.Scanner;
 public class Application {
 
     public static void main(String[] args) {
+        deliveryCalculate();
+    }
+
+    /**
+     * Delivery calculate.
+     */
+    private static void deliveryCalculate() {
 
         Scanner in = new Scanner(System.in);
-
         PropertiesFileReader propertiesFileReader = new PropertiesFileReader();
-
         DeliveryCost deliveryCost;
 
         try {
@@ -25,15 +30,14 @@ public class Application {
 
             deliveryCost = new DeliveryCost(weight, distance);
 
-            double minCoef = propertiesFileReader.getPropertyValue("coef.min");
-            double middleCoef = propertiesFileReader.getPropertyValue("coef.middle");
-            double maxCoef = propertiesFileReader.getPropertyValue("coef.max");
-
             if (weight < 15) {
+                double minCoef = propertiesFileReader.getPropertyValue("coef.min");
                 deliveryCost.setCoefficient(minCoef);
             } else if (weight >= 15 && weight < 30) {
+                double middleCoef = propertiesFileReader.getPropertyValue("coef.middle");
                 deliveryCost.setCoefficient(middleCoef);
             } else {
+                double maxCoef = propertiesFileReader.getPropertyValue("coef.max");
                 deliveryCost.setCoefficient(maxCoef);
             }
 

@@ -1,5 +1,6 @@
 package com.epam.brest.cources;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -9,9 +10,6 @@ import java.util.Properties;
  */
 class PropertiesFileReader {
 
-  private Properties property = new Properties();
-  private FileInputStream fileInputStream;
-
   /**
    * Gets property value.
    *
@@ -20,10 +18,10 @@ class PropertiesFileReader {
    * @throws IOException the io exception
    */
   public double getPropertyValue(String prop) throws IOException {
-    fileInputStream = new FileInputStream(
-        "/home/mikalai/IdeaProjects/Mikalai-Kazak/deliveryCost/src/main/resources/cost.properties");
+    File file = new File("../Mikalai-Kazak/deliveryCost/src/main/resources/cost.properties");
+    FileInputStream fileInputStream = new FileInputStream(file);
+    Properties property = new Properties();
     property.load(fileInputStream);
-
     return Double.parseDouble(property.getProperty(prop));
   }
 }
