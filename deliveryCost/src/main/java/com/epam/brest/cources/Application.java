@@ -9,6 +9,11 @@ import java.util.Scanner;
  */
 public class Application {
 
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
         deliveryCalculate();
     }
@@ -17,7 +22,6 @@ public class Application {
      * Delivery calculate.
      */
     private static void deliveryCalculate() {
-
         Scanner in = new Scanner(System.in);
         try {
             System.out.println("Enter distance: ");
@@ -35,7 +39,14 @@ public class Application {
         }
     }
 
-    public static double calculateCoefficient(double weight) throws IOException {
+    /**
+     * Get coefficient from properties.
+     *
+     * @param weight the param
+     * @return {double} coefficient
+     * @throws IOException - exception
+     */
+    private static double calculateCoefficient(double weight) throws IOException {
         PropertiesFileReader propertiesFileReader = new PropertiesFileReader();
         if (weight < 15) {
             return propertiesFileReader.getPropertyValue("coef.min");
