@@ -3,25 +3,25 @@ package com.epam.brest.cources;
 import java.math.BigDecimal;
 
 /**
- * The type Delivery cost.
+ * The type Delivery data.
  */
-class DeliveryCost {
+class DeliveryData {
 
-  private double weight;
+  private BigDecimal weight;
 
-  private double distance;
+  private BigDecimal distance;
 
-  private double coefficient;
+  private BigDecimal coefficient;
 
   /**
-   * Instantiates a new Delivery cost.
+   * Instantiates a new Delivery data.
    *
    * @param weight the weight
    * @param distance the distance
    * @param coefficient the coefficient
    */
-  public DeliveryCost(double weight, double distance, double coefficient) {
-    if (weight <= 0 || distance <= 0 || coefficient < 0) {
+  public DeliveryData(BigDecimal weight, BigDecimal distance, BigDecimal coefficient) {
+    if (weight.signum() <= 0 || distance.signum() <= 0 || coefficient.signum() < 0) {
       throw new IllegalArgumentException("Parameters can't be negative or zero");
     }
     this.coefficient = coefficient;
@@ -30,13 +30,13 @@ class DeliveryCost {
   }
 
   /**
-   * Instantiates a new Delivery cost.
+   * Instantiates a new Delivery data.
    *
    * @param weight the weight
    * @param distance the distance
    */
-  public DeliveryCost(double weight, double distance) {
-    if (weight <= 0 || distance <= 0) {
+  public DeliveryData(BigDecimal weight, BigDecimal distance) {
+    if (weight.signum() <= 0 || distance.signum() <= 0) {
       throw new IllegalArgumentException("Parameters can't be negative or zero");
     }
     this.weight = weight;
@@ -44,9 +44,9 @@ class DeliveryCost {
   }
 
   /**
-   * Instantiates a new Delivery cost.
+   * Instantiates a new Delivery data.
    */
-  public DeliveryCost() {
+  public DeliveryData() {
 
   }
 
@@ -55,7 +55,7 @@ class DeliveryCost {
    *
    * @return the coefficient
    */
-  public double getCoefficient() {
+  public BigDecimal getCoefficient() {
     return coefficient;
   }
 
@@ -64,8 +64,8 @@ class DeliveryCost {
    *
    * @param coefficient the coefficient
    */
-  public void setCoefficient(double coefficient) {
-    if (coefficient <= 0) {
+  public void setCoefficient(BigDecimal coefficient) {
+    if (coefficient.signum() <= 0) {
       throw new IllegalArgumentException("The coefficient can't be negative");
     }
     this.coefficient = coefficient;
@@ -76,7 +76,7 @@ class DeliveryCost {
    *
    * @return the weight
    */
-  public double getWeight() {
+  public BigDecimal getWeight() {
     return this.weight;
   }
 
@@ -86,8 +86,8 @@ class DeliveryCost {
    * @param weight the weight
    * @throws IllegalArgumentException the illegal argument exception
    */
-  public void setWeight(double weight) throws IllegalArgumentException {
-    if (weight <= 0) {
+  public void setWeight(BigDecimal weight) throws IllegalArgumentException {
+    if (weight.signum() <= 0) {
       throw new IllegalArgumentException("The weight can't be negative");
     }
     this.weight = weight;
@@ -98,7 +98,7 @@ class DeliveryCost {
    *
    * @return the distance
    */
-  public double getDistance() {
+  public BigDecimal getDistance() {
     return this.distance;
   }
 
@@ -108,8 +108,8 @@ class DeliveryCost {
    * @param distance the distance
    * @throws IllegalArgumentException the illegal argument exception
    */
-  public void setDistance(double distance) throws IllegalArgumentException {
-    if (distance <= 0) {
+  public void setDistance(BigDecimal distance) throws IllegalArgumentException {
+    if (distance.signum() <= 0) {
       throw new IllegalArgumentException("The distance can't be negative");
     }
     this.distance = distance;
@@ -121,7 +121,7 @@ class DeliveryCost {
    * @return the big decimal
    */
   public BigDecimal calculateDeliveryCost() {
-    return BigDecimal.valueOf((distance + weight) * coefficient);
+    return (weight.add(distance)).multiply(coefficient);
   }
 
 

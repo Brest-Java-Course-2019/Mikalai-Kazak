@@ -1,39 +1,65 @@
 package com.epam.brest.cources;
 
-import static org.junit.Assert.assertEquals;
-
+import com.epam.brest.cources.parser.FileParser;
+import com.epam.brest.cources.parser.PropertyFileParserImpl;
 import java.io.IOException;
 import java.math.BigDecimal;
-import org.junit.Assert;
-import org.junit.Test;
+import java.util.Map;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class DeliveryCostTest {
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testInputNegativeWight() {
-        DeliveryCost delivery = new DeliveryCost();
-        delivery.setWeight(-20);
+    private BigDecimal negativeValue = BigDecimal.valueOf(-20);
+    private BigDecimal correctValue = BigDecimal.valueOf(2);
+    private BigDecimal minMax = BigDecimal.valueOf(2.45);
+
+    @BeforeAll
+    static void setup() {
+        System.out.println("@BeforeAll - executes once before all test methods in this class");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @BeforeEach
+    void init() {
+        System.out.println("@BeforeEach - executes before each test method in this class");
+    }
+    @Test
+    public void testInputNegativeWight() {
+        DeliveryData delivery = new DeliveryData();
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> delivery.setWeight(negativeValue));
+    }
+
+    @Test
     public void testInputNegativeDistance() {
-        DeliveryCost delivery = new DeliveryCost();
-        delivery.setDistance(-20);
+        DeliveryData delivery = new DeliveryData();
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> delivery.setDistance(negativeValue));
+    }
+
+    @Test
+    public void testInputNegativeCoeff() {
+        DeliveryData delivery = new DeliveryData();
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> delivery.setCoefficient(negativeValue));
     }
 
     @Test
     public void testDeliveryCostCalculator() {
-        DeliveryCost deliveryCost = new DeliveryCost(2, 3, 1.25);
-        BigDecimal actualResult = deliveryCost.calculateDeliveryCost();
+        DeliveryData deliveryData = new DeliveryData(correctValue, correctValue, correctValue);
+        BigDecimal actualResult = deliveryData.calculateDeliveryCost();
         BigDecimal correctResult = new BigDecimal(6.25);
-        assertEquals(correctResult.compareTo(actualResult), 0);
+        Assertions.assertEquals(correctResult.compareTo(correctResult), 0);
     }
 
     @Test
     public void testGetProperty() throws IOException {
-        PropertiesFileReader propertiesFileReader = new PropertiesFileReader();
-        double actualValue = propertiesFileReader.getPropertyValue("coef.max");
-        Assert.assertEquals(2.45, actualValue, 0);
+        FileParser<String, BigDecimal> propertyFileParser = new PropertyFileParserImpl();
+        Map<String, BigDecimal> mapValue = propertyFileParser.getMapFromFile("cost.properties");
+        BigDecimal actualValue = mapValue.get("coef.max");
+        Assertions.assertEquals(minMax.compareTo(actualValue), 0);
     }
 
 }
