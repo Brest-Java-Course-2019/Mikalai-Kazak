@@ -46,7 +46,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.epam.brest.cources.Application</mainClass>
+                            <mainClass>com.epam.brest.cources.Runner</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
