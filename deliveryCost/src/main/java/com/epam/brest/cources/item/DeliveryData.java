@@ -21,9 +21,6 @@ public class DeliveryData {
      * @param coefficient the coefficient
      */
     public DeliveryData(BigDecimal weight, BigDecimal distance, BigDecimal coefficient) {
-        if (weight.signum() <= 0 || distance.signum() <= 0 || coefficient.signum() < 0) {
-            throw new IllegalArgumentException("Parameters can't be negative or zero");
-        }
         this.coefficient = coefficient;
         this.weight = weight;
         this.distance = distance;
@@ -36,9 +33,6 @@ public class DeliveryData {
      * @param distance the distance
      */
     public DeliveryData(BigDecimal weight, BigDecimal distance) {
-        if (weight.signum() <= 0 || distance.signum() <= 0) {
-            throw new IllegalArgumentException("Parameters can't be negative or zero");
-        }
         this.weight = weight;
         this.distance = distance;
     }
@@ -65,9 +59,6 @@ public class DeliveryData {
      * @param coefficient the coefficient
      */
     public void setCoefficient(BigDecimal coefficient) {
-        if (coefficient.signum() <= 0) {
-            throw new IllegalArgumentException("The coefficient can't be negative");
-        }
         this.coefficient = coefficient;
     }
 
@@ -84,12 +75,8 @@ public class DeliveryData {
      * Sets weight.
      *
      * @param weight the weight
-     * @throws IllegalArgumentException the illegal argument exception
      */
-    public void setWeight(BigDecimal weight) throws IllegalArgumentException {
-        if (weight.signum() <= 0) {
-            throw new IllegalArgumentException("The weight can't be negative");
-        }
+    public void setWeight(BigDecimal weight) {
         this.weight = weight;
     }
 
@@ -106,13 +93,16 @@ public class DeliveryData {
      * Sets distance.
      *
      * @param distance the distance
-     * @throws IllegalArgumentException the illegal argument exception
      */
-    public void setDistance(BigDecimal distance) throws IllegalArgumentException {
-        if (distance.signum() <= 0) {
-            throw new IllegalArgumentException("The distance can't be negative");
-        }
+    public void setDistance(BigDecimal distance) {
         this.distance = distance;
     }
 
+    @Override
+    public String toString() { 
+        return "DeliveryData: " +
+            " weight = " + weight.toString() +
+            ", distance = " + distance.toString() +
+            ", coefficient = " + coefficient.toString();
+    }
 }

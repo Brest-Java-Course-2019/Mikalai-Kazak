@@ -12,8 +12,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 public class DeliveryCostTest {
+
+    private static final Logger LOGGER = LogManager.getLogger();
+
+    private ConsoleInterface ci = new ConsoleInterface();
 
     private BigDecimal negativeValue = BigDecimal.valueOf(-20);
     private BigDecimal correctValue = BigDecimal.valueOf(2);
@@ -30,28 +37,8 @@ public class DeliveryCostTest {
     }
 
     @Test
-    public void testInputNegativeWight() {
-        DeliveryData delivery = new DeliveryData();
-        Assertions.assertThrows(IllegalArgumentException.class,
-                () -> delivery.setWeight(negativeValue));
-    }
-
-    @Test
-    public void testInputNegativeDistance() {
-        DeliveryData delivery = new DeliveryData();
-        Assertions.assertThrows(IllegalArgumentException.class,
-                () -> delivery.setDistance(negativeValue));
-    }
-
-    @Test
-    public void testInputNegativeCoeff() {
-        DeliveryData delivery = new DeliveryData();
-        Assertions.assertThrows(IllegalArgumentException.class,
-                () -> delivery.setCoefficient(negativeValue));
-    }
-
-    @Test
     public void testDeliveryCostCalculator() {
+        LOGGER.debug("testDeliveryCostCalculator()");
         Calculator calculator = new CalculatorImpl();
         DeliveryData deliveryData = new DeliveryData(correctValue, correctValue, correctValue);
         BigDecimal actualResult = calculator.calculateCost(deliveryData);
@@ -60,11 +47,16 @@ public class DeliveryCostTest {
     }
 
     @Test
-    public void testGetProperty() throws IOException {
-        FileParser<String, BigDecimal> fileParser = new PropertyFileParser();
-        Map<String, BigDecimal> mapValue = fileParser.getMapFromFile("cost.properties");
-        BigDecimal actualValue = mapValue.get("coef.max");
-        Assertions.assertEquals(minMax.compareTo(actualValue), 0);
+    public void testCheckCorrectInputValueMethod() {
+        LOGGER.debug("testCheckCorrectInputValueMethod()");
+        boolean actual = ci.checkInputValue(minMax);
+        Assertions.assertTrue(actual);
     }
 
+    @Test
+    public void testCheckNegativeInputValueMethod() {
+        LOGGER.debug("testCheckNegativeInputValueMethod()");
+        boolean actual = ci.checkInputValue(negativeValue);
+        Assertions.assertFalse(actual);
+    }
 }

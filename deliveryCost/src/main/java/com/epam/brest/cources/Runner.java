@@ -4,11 +4,16 @@ import com.epam.brest.cources.calculator.Calculator;
 import com.epam.brest.cources.calculator.CalculatorImpl;
 import com.epam.brest.cources.item.DeliveryData;
 import java.math.BigDecimal;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 /**
  * The type Runner.
  */
 public class Runner {
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * The entry point of application.
@@ -22,9 +27,9 @@ public class Runner {
         try {
             deliveryData = consoleInterface.getDeliveryData();
             BigDecimal totalPrice = calculator.calculateCost(deliveryData);
-            System.out.println("Total price = " + totalPrice.toPlainString() + "$");
+            LOGGER.info("Total price = {}$", totalPrice.toPlainString());
         } catch (Exception e) {
-            System.out.println(e.getLocalizedMessage());
+            LOGGER.error("An error has occurred: {}", e.getLocalizedMessage());
         }
     }
 }

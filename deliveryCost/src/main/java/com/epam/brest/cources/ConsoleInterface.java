@@ -1,36 +1,60 @@
 package com.epam.brest.cources;
 
 import com.epam.brest.cources.item.DeliveryData;
-import com.epam.brest.cources.parser.FileParser;
-import com.epam.brest.cources.parser.PropertyFileParser;
+import com.epam.brest.cources.service.CoefficientSelector;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Map;
 import java.util.Scanner;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The type Console interface.
  */
 public class ConsoleInterface {
 
+    private static final Logger LOGGER = LogManager.getLogger();
+
     private static final String PREFIX = "Enter ";
     private static final String[] MESSAGES = {"weight in kg", "distance in km"};
+    private static final String PROPERTY_FILE = "cost.properties";
+
     private Scanner scanner;
-    private FileParser<String, BigDecimal> fileParser;
     private DeliveryData deliveryData;
 
     /**
      * Instantiates a new Console interface.
      */
     public ConsoleInterface() {
-        this.fileParser = new PropertyFileParser();
         this.scanner = new Scanner(System.in);
         this.deliveryData = new DeliveryData();
     }
 
-    private BigDecimal receiveValueFromConsole(String message) {
+    private BigDecimal receiveValueFromConsole(String message) throws IllegalAccessException {
+        LOGGER.debug("receiveValueFromConsole({})", message);
         System.out.println(message);
-        return scanner.nextBigDecimal();
+        BigDecimal inputValue = scanner.nextBigDecimal();
+        if (checkInputValue(inputValue)) {
+            return inputValue;
+        } else {
+            throw new IllegalArgumentException("Parameters can't be negative or zero");
+        }
+    }
+
+     /**
+     * Check input data
+     *
+     * @param inputValue the input value
+     */
+    public boolean checkInputValue(BigDecimal inputValue) {
+        LOGGER.debug("checkInputValue({})", inputValue);
+        boolean resultCheck;
+        if(inputValue.signum() <= 0 || inputValue == null) {
+            resultCheck = false;
+        } else {
+            resultCheck = true;
+        }
+        return resultCheck;
     }
 
     /**
@@ -38,32 +62,17 @@ public class ConsoleInterface {
      *
      * @return the delivery data
      * @throws IOException the io exception
+     * @throws IllegalAccessException the io exception
      */
-    public DeliveryData getDeliveryData() throws IOException {
+    public DeliveryData getDeliveryData() throws IOException, IllegalAccessException {
+        LOGGER.debug("getDeliveryData()");
+        CoefficientSelector coefficientSelector = new CoefficientSelector();
         BigDecimal weight = receiveValueFromConsole(PREFIX + MESSAGES[0]);
         deliveryData.setWeight(weight);
         BigDecimal distance = receiveValueFromConsole(PREFIX + MESSAGES[1]);
         deliveryData.setDistance(distance);
-        Map<String, BigDecimal> map = fileParser.getMapFromFile("cost.properties");
-        BigDecimal coefficient = selectPriceValue(map, weight);
+        BigDecimal coefficient = coefficientSelector.selectCoefficientValueFromFile(PROPERTY_FILE, weight);
         deliveryData.setCoefficient(coefficient);
         return deliveryData;
-    }
-
-    /**
-     * Get coefficient.
-     *
-     * @param valuesMap the map
-     * @param weight the weight
-     * @return the coefficient
-     */
-    private BigDecimal selectPriceValue(Map<String, BigDecimal> valuesMap, BigDecimal weight) {
-        if (weight.doubleValue() < 15) {
-            return valuesMap.get("coef.min");
-        } else if (weight.doubleValue() >= 15 && weight.doubleValue() < 30) {
-            return valuesMap.get("coef.middle");
-        } else {
-            return valuesMap.get("coef.max");
-        }
     }
 }
