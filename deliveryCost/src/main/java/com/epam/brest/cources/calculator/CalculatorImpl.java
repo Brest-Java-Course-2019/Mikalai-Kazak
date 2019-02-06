@@ -23,7 +23,7 @@ public class CalculatorImpl implements Calculator {
   public BigDecimal calculateCost(BigDecimal weight, BigDecimal distance,
       BigDecimal coefficient) {
     LOGGER.debug("calculateCost({}, {}, {})", weight, distance, coefficient);
-    return weight.add(distance).multiply(coefficient);
+    return weight.add(distance.multiply(coefficient));
   }
 
 }
