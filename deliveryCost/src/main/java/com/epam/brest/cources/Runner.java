@@ -13,23 +13,23 @@ import org.apache.logging.log4j.Logger;
  */
 public class Runner {
 
-    private static final Logger LOGGER = LogManager.getLogger();
+  private static final Logger LOGGER = LogManager.getLogger();
 
-    /**
-     * The entry point of application.
-     *
-     * @param args the input arguments
-     */
-    public static void main(String[] args) {
-        Calculator calculator = new CalculatorImpl();
-        ConsoleInterface consoleInterface = new ConsoleInterface();
-        DeliveryData deliveryData;
-        try {
-            deliveryData = consoleInterface.getDeliveryData();
-            BigDecimal totalPrice = calculator.calculateCost(deliveryData);
-            LOGGER.info("Total price = {}$", totalPrice.toPlainString());
-        } catch (Exception e) {
-            LOGGER.error("An error has occurred: {}", e.getLocalizedMessage());
-        }
+  /**
+   * The entry point of application.
+   *
+   * @param args the input arguments
+   */
+  public static void main(String[] args) {
+    Calculator calculator = new CalculatorImpl();
+    ConsoleInterface consoleInterface = new ConsoleInterface();
+    DeliveryData deliveryData;
+    try {
+      deliveryData = consoleInterface.getDeliveryData();
+      BigDecimal totalPrice = calculator.calculateCost(deliveryData);
+      LOGGER.info("Total price = {}$", totalPrice.toPlainString());
+    } catch (Exception e) {
+      LOGGER.error("An error has occurred: {}", e.getLocalizedMessage());
     }
+  }
 }

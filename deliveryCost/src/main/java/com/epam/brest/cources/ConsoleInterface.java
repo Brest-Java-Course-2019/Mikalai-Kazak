@@ -13,66 +13,62 @@ import org.apache.logging.log4j.Logger;
  */
 public class ConsoleInterface {
 
-    private static final Logger LOGGER = LogManager.getLogger();
+  private static final Logger LOGGER = LogManager.getLogger();
 
-    private static final String PREFIX = "Enter ";
-    private static final String[] MESSAGES = {"weight in kg", "distance in km"};
-    private static final String PROPERTY_FILE = "cost.properties";
+  private static final String PREFIX = "Enter ";
+  private static final String[] MESSAGES = {"weight in kg", "distance in km"};
+  private static final String PROPERTY_FILE = "cost.properties";
 
-    private Scanner scanner;
-    private DeliveryData deliveryData;
+  private Scanner scanner;
+  private DeliveryData deliveryData;
 
-    /**
-     * Instantiates a new Console interface.
-     */
-    public ConsoleInterface() {
-        this.scanner = new Scanner(System.in);
-        this.deliveryData = new DeliveryData();
+  /**
+   * Instantiates a new Console interface.
+   */
+  public ConsoleInterface() {
+    this.scanner = new Scanner(System.in);
+    this.deliveryData = new DeliveryData();
+  }
+
+  private BigDecimal receiveValueFromConsole(String message) {
+    LOGGER.debug("receiveValueFromConsole({})", message);
+    System.out.println(message);
+    BigDecimal inputValue = scanner.nextBigDecimal();
+    if (checkInputValue(inputValue)) {
+      return inputValue;
+    } else {
+      throw new IllegalArgumentException("Parameters can't be negative or zero");
     }
+  }
 
-    private BigDecimal receiveValueFromConsole(String message) throws IllegalAccessException {
-        LOGGER.debug("receiveValueFromConsole({})", message);
-        System.out.println(message);
-        BigDecimal inputValue = scanner.nextBigDecimal();
-        if (checkInputValue(inputValue)) {
-            return inputValue;
-        } else {
-            throw new IllegalArgumentException("Parameters can't be negative or zero");
-        }
-    }
+  /**
+   * Check input value boolean.
+   *
+   * @param inputValue the input value
+   * @return the boolean
+   */
+  public boolean checkInputValue(BigDecimal inputValue) {
+    LOGGER.debug("checkInputValue({})", inputValue);
+    return inputValue.signum() > 0;
+  }
 
-     /**
-     * Check input data
-     *
-     * @param inputValue the input value
-     */
-    public boolean checkInputValue(BigDecimal inputValue) {
-        LOGGER.debug("checkInputValue({})", inputValue);
-        boolean resultCheck;
-        if(inputValue.signum() <= 0 || inputValue == null) {
-            resultCheck = false;
-        } else {
-            resultCheck = true;
-        }
-        return resultCheck;
-    }
-
-    /**
-     * Gets delivery data.
-     *
-     * @return the delivery data
-     * @throws IOException the io exception
-     * @throws IllegalAccessException the io exception
-     */
-    public DeliveryData getDeliveryData() throws IOException, IllegalAccessException {
-        LOGGER.debug("getDeliveryData()");
-        CoefficientSelector coefficientSelector = new CoefficientSelector();
-        BigDecimal weight = receiveValueFromConsole(PREFIX + MESSAGES[0]);
-        deliveryData.setWeight(weight);
-        BigDecimal distance = receiveValueFromConsole(PREFIX + MESSAGES[1]);
-        deliveryData.setDistance(distance);
-        BigDecimal coefficient = coefficientSelector.selectCoefficientValueFromFile(PROPERTY_FILE, weight);
-        deliveryData.setCoefficient(coefficient);
-        return deliveryData;
-    }
+  /**
+   * Gets delivery data.
+   *
+   * @return the delivery data
+   * @throws IOException the io exception
+   * @throws IllegalAccessException the illegal access exception
+   */
+  DeliveryData getDeliveryData() throws IOException, IllegalAccessException {
+    LOGGER.debug("getDeliveryData()");
+    CoefficientSelector coefficientSelector = new CoefficientSelector();
+    BigDecimal weight = receiveValueFromConsole(PREFIX + MESSAGES[0]);
+    deliveryData.setWeight(weight);
+    BigDecimal distance = receiveValueFromConsole(PREFIX + MESSAGES[1]);
+    deliveryData.setDistance(distance);
+    BigDecimal coefficient = coefficientSelector
+        .selectCoefficientValueFromFile(PROPERTY_FILE, weight);
+    deliveryData.setCoefficient(coefficient);
+    return deliveryData;
+  }
 }

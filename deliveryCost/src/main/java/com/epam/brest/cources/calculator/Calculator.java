@@ -8,23 +8,23 @@ import java.math.BigDecimal;
  */
 public interface Calculator {
 
-    /**
-     * Calculate cost big decimal.
-     *
-     * @param deliveryData the delivery data
-     * @return the big decimal
-     */
-    BigDecimal calculateCost(DeliveryData deliveryData);
+  /**
+   * Calculate cost big decimal.
+   *
+   * @param deliveryData the delivery data
+   * @return the big decimal
+   */
+  BigDecimal calculateCost(DeliveryData deliveryData);
 
-    /**
-     * Calculate cost big decimal.
-     *
-     * @param weight the weight
-     * @param distance the distance
-     * @param coefficient the coefficient
-     * @return the big decimal
-     */
-    BigDecimal calculateCost(BigDecimal weight, BigDecimal distance, BigDecimal coefficient);
+  /**
+   * Calculate cost big decimal.
+   *
+   * @param weight the weight
+   * @param distance the distance
+   * @param coefficient the coefficient
+   * @return the big decimal
+   */
+  BigDecimal calculateCost(BigDecimal weight, BigDecimal distance, BigDecimal coefficient);
 
 }
 
