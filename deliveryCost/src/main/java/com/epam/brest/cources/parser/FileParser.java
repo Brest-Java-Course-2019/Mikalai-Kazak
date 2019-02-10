@@ -11,12 +11,12 @@ import java.util.Map;
  */
 public interface FileParser<K, V> {
 
-  /**
-   * Gets map from file.
-   *
-   * @param filePath the file path
-   * @return the map from file
-   * @throws IOException the io exception
-   */
-  Map<K, V> getMapFromFile(String filePath) throws IOException;
+    /**
+     * Gets map from file.
+     *
+     * @param filePath the file path
+     * @return the map from file
+     * @throws IOException the io exception
+     */
+    Map<K, V> getMapFromFile(String filePath) throws IOException;
 }
